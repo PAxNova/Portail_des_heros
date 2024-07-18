@@ -52,6 +52,7 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'faker'
 gem "cloudinary"
+gem 'activestorage-cloudinary-service'
 gem 'jwt'
 gem "httparty"
 gem "rails_admin", "3.0"
