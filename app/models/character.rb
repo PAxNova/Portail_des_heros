@@ -8,6 +8,8 @@ class Character < ApplicationRecord
   has_many :party_characters
   has_many :parties, through: :party_characters
 
+  has_one_attached :photo
+
   def update_completion_rate
     rate = 0
     rate += 1 if self.universe.present?
