@@ -16,7 +16,7 @@ RailsAdmin.config do |config|
     end
   end
 
-#  config.included_models = [ "characters", "tutorials"]
+config.included_models = [ "characters", "tutorials"]
 
   
 
