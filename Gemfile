@@ -54,6 +54,7 @@ gem 'faker'
 gem "cloudinary"
 gem 'jwt'
 gem "httparty"
+gem "rails_admin", "3.0"
 
 group :development, :test do
   gem "dotenv-rails"
