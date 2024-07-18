@@ -53,7 +53,7 @@ gem 'faker'
 gem "cloudinary"
 gem 'jwt'
 gem "httparty"
-gem 'rails_admin', github: 'dtcristo/rails_admin', branch: 'active_storage'
+gem 'rails_admin'
 
 group :development, :test do
   gem "dotenv-rails"
