@@ -1,2 +1,38 @@
-<h1>Parties#index</h1>
-<p>Find me in app/views/parties/index.html.erb</p>
+<% content_for :title do %>
+  Toutes les Parties
+<% end %>
+
+<div class="characters-index">
+  <h1>Toutes les Parties</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Univers</th>
+        <th>Maître de Jeu</th>
+        <th>Nombre de Personnages</th>
+        <th>Créé le</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @parties.each_with_index do |party, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= party.name.presence || 'Non défini' %></td>
+          <td><%= party.universe&.name.presence || 'Non défini' %></td>
+          <td><%= party.user.pseudo.presence || 'Non défini' %></td>
+          <td><%= party.characters.count %></td>
+          <td><%= party.created_at.in_time_zone('Paris').strftime("%d/%m/%Y %H:%M") %></td>
+          <td>
+            <%= link_to 'Show', party_path(party) %>
+            <%= link_to 'Edit', edit_party_path(party) %>
+            <%= link_to 'Delete', party_path(party), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

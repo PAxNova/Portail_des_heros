@@ -1,2 +1,14 @@
-<h1>Parties#show</h1>
-<p>Find me in app/views/parties/show.html.erb</p>
+<h1><%= @party.name %></h1>
+<p>Univers: <%= @party.universe.name %></p>
+<p>Maître de jeu: <%= @party.user.pseudo %></p>
+
+<h2>Personnages actifs dans cette partie</h2>
+<ul>
+  <% @party.characters.where(available_status: 'Active').each do |character| %>
+    <li><%= link_to character.name, character_path(character) %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Modifier', edit_party_path(@party), class: 'btn btn-primary' %>
+<%= link_to 'Supprimer', @party, method: :delete, data: { confirm: 'Êtes-vous sûr?' }, class: 'btn btn-danger' %>
+<%= link_to 'Retour', parties_path, class: 'btn btn-secondary' %>
