@@ -1,5 +1,5 @@
 <div class="text-affichage-show-character-div">
-  <h3 class="text-affichage-show-character">Félicitation ! Vous venez de créer votre personnage !
+  <h3 class="text-affichage-show-character">Félicitations ! Vous venez de créer votre personnage !
   Vous pouvez maintenant lancer une recherche de partie avec votre nouveau personnage ou décider de le garder pour plus tard. Retrouvez votre personnage dans votre Tableau De Bord.</h3>
 </div>
 
@@ -46,9 +46,14 @@
         </div>
     </div>
 </div>
+
 <div class="btn-show-container">
-    <button>Jouer plus tard</button>
-    <button>Trouver des joueurs !</button>
+    <%= link_to 'Découvrir le lexique', posts_path, class: 'btn btn-secondary' %>
+    <% if active_party = @character.parties.where('party_characters.status = ?', 'active').first %>
+        <%= link_to 'Rejoindre ma partie', party_path(active_party), class: 'btn btn-primary' %>
+    <% else %>
+        <%= link_to 'Rejoindre ma partie', parties_path, class: 'btn btn-primary' %>
+    <% end %>
 </div>
 
 <div class="character-backstory">
