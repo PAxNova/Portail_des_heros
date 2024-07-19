@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  get 'parties/index'
+  get 'parties/show'
+  get 'parties/new'
+  get 'parties/create'
+  get 'parties/edit'
+  get 'parties/update'
+  get 'parties/destroy'
+  get 'parties/set_party'
+  get 'parties/party_params'
 
   devise_for :users
   root to: "pages#home"
