@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
 
-  # Limiter le nombre de routes
+  # A FAIRE : limiter le nombre de routes ici
   resources :characters
+  resources :parties
 
   # Les routes pour notre lexique (Post)
   resources :posts, only: [:index, :show]
