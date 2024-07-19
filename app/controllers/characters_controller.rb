@@ -39,7 +39,8 @@ class CharactersController < ApplicationController
       @character.update(completion_rate: new_completion_rate)
 
       if @character.completion_rate >= 10
-        redirect_to @character, notice: 'Le charater est terminé !'
+        assign_to_party(@character)
+        redirect_to @character, notice: 'Le character est terminé et ajouté à une partie !'
       else
         redirect_to edit_character_path(@character)
       end
@@ -56,5 +57,11 @@ class CharactersController < ApplicationController
 
   def character_params
     params.require(:character).permit(:name, :universe_id, :race_id, :univers_class_id, :strength, :dexterity, :intelligence, :constitution, :wisdom, :charisma, :available_status)
+  end
+
+  def assign_to_party(character)
+    # Attribuer le personnage à la première partie trouvée
+    first_party = Party.first
+    PartyCharacter.create!(character: character, party: first_party, status: 'accepted') if first_party
   end
 end
