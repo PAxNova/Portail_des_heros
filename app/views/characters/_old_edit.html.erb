@@ -1,0 +1,133 @@
+<div class="character-edit <%= @character.universe.name.parameterize %>">
+  <h1>Création de votre personnage</h1>
+  <div class="progress-bar">
+    <div class="progress" style="width: <%= (@character.completion_rate.to_f / 10 * 100).round %>%;"></div>
+  </div>
+  <div class="progression-wrapper">
+    <p class="progression-text">Progression: <%= (@character.completion_rate.to_f / 10 * 100).round %> %</p>
+  </div>
+
+  <%= simple_form_for @character do |f| %>
+    <% case @character.completion_rate %>
+    <% when 1 %>
+      <div class="options-wrapper">
+        <% @character.universe.races.each do |race| %>
+          <div class="option-item">
+            <%= f.radio_button :race_id, race.id %>
+            <label for="<%= f.object_name %>_race_id_<%= race.id %>">
+              <%= cl_image_tag race.photo.key, alt: race.name %>
+              <div class="description">
+                <strong><%= race.name %></strong>
+                <p><%= race.description %></p>
+                 <%# toggle modal %>
+                <span class="toggle-modal"data-bs-toggle="modal" data-bs-target="#race-modal-<%= race.id %>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="En savoir plus sur les <%= race.name %>s">?</span>
+              </div>
+            </label>
+          </div>
+          <div class="modal fade " id="race-modal-<%= race.id %>" tabindex="-1" aria-labelledby="race_modalLabel" aria-hidden="true">
+            <%# modal %>
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <%# modal content %>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="race_modalLabel"> Les <%= race.name %>s</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <% tutorial = @character.universe.tutorials.find_by(race: race.name) %>
+                  <% if tutorial %>
+                    <p><%= tutorial.content.html_safe %></p>
+                    <% if tutorial.video_url.present? %>
+                      <video src="<%= tutorial.video_url %>" controls></video>
+                    <% end %>
+                  <% else %>
+                    <p>Aucun tutoriel disponible pour cette race.</p>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% when 2 %>
+      <div class="options-wrapper">
+        <% @character.universe.univers_classes.each do |univers_class| %>
+          <div class="option-item">
+            <%= f.radio_button :univers_class_id, univers_class.id %>
+            <label for="<%= f.object_name %>_univers_class_id_<%= univers_class.id %>">
+              <%= cl_image_tag univers_class.photo.key, alt: univers_class.name %>
+              <div class="description">
+                <strong><%= univers_class.name %></strong>
+                <p><%= univers_class.description %></p>
+                <%# toggle  modal %>
+                <span class="toggle-modal" data-bs-toggle="modal" data-bs-target="#class-modal-<%= univers_class.id  %>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="En savoir plus sur la classe <%= univers_class.name %>">?</span>
+              </div>
+            </label>
+          </div>
+          <div class="modal fade" id="class-modal-<%= univers_class.id %>" tabindex="-1" aria-labelledby="class_modalLabel" aria-hidden="true">
+            <%# modal %>
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <%# modal content %>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="class_modalLabel">Tutoriel: <%= univers_class.name %></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <% tutorial = @character.universe.tutorials.find_by(univers_class: univers_class.name) %>
+                  <% if tutorial %>
+                    <h5><%= tutorial.title %></h5>
+                    <p><%= tutorial.content %></p>
+                    <% if tutorial.video_url.present? %>
+                      <video src="<%= tutorial.video_url %>" controls></video>
+                    <% end %>
+                  <% else %>
+                    <p>Aucun tutoriel disponible pour cette classe.</p>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% when 3..8 %>
+      <h3>Il est maintenant temps de definir les caracteristiques de ton héros</h3>
+      <h5>Pour chacune d'entre elles choisis un valeur unique</h5>
+      <div class="caracteristiques-container" data-controller="character">
+        <div class="caracteristiques-manager">
+          <div class="caracteristique">
+            <%= f.input :strength, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"La Force représente la puissance physique et musculaire de votre personnage. Cette caractéristique est particulièrement importante pour les guerriers car elle les aide à s'imposer au combat"}}, label:"Force", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+          <div class="caracteristique">
+            <%= f.input :dexterity, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"La Dextérité mesure l'agilité, les réflexes et l'équilibre du personnage. C'est la caractéristique primordiale des voleurs"}}, label:"Dexterité", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+          <div class="caracteristique">
+            <%= f.input :intelligence, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"L'Intelligence symbolise les facilités d'apprentissage et de raisonnement de votre aventurier. Elle est vitale pour les magiciens, car elle détermine le nombre de sorts qu'ils peuvent jeter et la puissance de ces derniers."}}, label:"Intelligence", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+          <div class="caracteristique">
+            <%= f.input :constitution, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"La Constitution représente la santé et l'endurance de votre personnage. Le bonus de Constitution d'un personnage augmente son total de points de vie, ce qui rend cette caractéristique très importante pour toutes les classes."}}, label:"Constitution", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+          <div class="caracteristique">
+            <%= f.input :wisdom, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"La Sagesse regroupe la volonté, le bon sens, le degré de perception et l'intuition du personnage. Alors que l'Intelligence représente la faculté à analyser les informations, la Sagesse définit la manière dont le personnage perçoit le monde qui l'entoure."}}, label:"Sagesse", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+          <div class="caracteristique">
+            <%= f.input :charisma, collection:[8, 10, 12, 13, 14, 15], label_html:{class:"caracteristique-label", data:{tooltip_target:"tooltip", bs_toggle:"tooltip", bs_placement:"top", bs_title:"Le Charisme mesure la force de persuasion du personnage, son magnétisme, sa capacité à diriger les autres et sa beauté. Cette caractéristique représente une force de caractère réelle, pas seulement la façon dont on est perçu par autrui."}}, label:"Charisme", input_html:{data:{character_target:"input", action:"change->character#disabled"}} %>
+          </div>
+        </div>
+      <div class="aleatoire">
+        <h5>ou bien laisse l'aleatoire choisir...</h5>
+        <button class="button-destin" data-action="click->character#random">Ta Destinée !</button>
+      </div>
+    </div>
+    <% when 9 %>
+      <%= f.input :name, label: 'Nom du personnage', input_html: { class: 'nom_du_personnage_p' } %>
+    <% end %>
+    <%= f.submit 'Continuer', class: "button button-#{@character.universe.name.parameterize}" %>
+  <% end %>
+</div>
