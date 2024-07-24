@@ -36,4 +36,6 @@ Rails.application.routes.draw do
 
   # Liste des tutos
   resources :tutorials, only: [:index]
+
+  mount ActionCable.server => '/cable'
 end
