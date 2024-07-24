@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= favicon_link_tag %>
+    <%= javascript_importmap_tags %>
 </head>
 
 <body class="<%= controller_name %>-<%= action_name %>">
@@ -25,7 +26,6 @@
     </div>
 
     <!-- Scripts importés à la fin du body pour un chargement correct après le contenu HTML -->
-    <%= javascript_importmap_tags %>
 </body>
 
 </html>

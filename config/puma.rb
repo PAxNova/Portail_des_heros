@@ -1,3 +1,4 @@
+# config/puma.rb
 # This configuration file will be evaluated by Puma. The top-level methods that
 # are invoked here are part of Puma's configuration DSL. For more information
 # about methods provided by the DSL, see https://puma.io/puma/Puma/DSL.html.
@@ -24,8 +25,14 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
-# Use a single worker in production
-workers ENV.fetch("WEB_CONCURRENCY") { 1 }
+# Use workers only in production
+workers ENV.fetch("WEB_CONCURRENCY") { 1 } if ENV.fetch("RAILS_ENV") == "production"
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
+
+preload_app!
+
+on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
