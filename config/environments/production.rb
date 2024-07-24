@@ -45,7 +45,10 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   config.action_cable.url = "wss://www.portail-des-heros.me/cable"
-  config.action_cable.allowed_request_origins = [ 'https://www.portail-des-heros.me', /http:\/\/www\.portail-des-heros\.me.*/ ]
+  config.action_cable.allowed_request_origins = [ 'https://www.portail-des-heros.me', 'http://www.portail-des-heros.me' ]
+
+  # Use Redis adapter for ActionCable
+  config.action_cable.adapter = :redis
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
@@ -65,7 +68,11 @@ Rails.application.configure do
   # "info" includes generic and useful information about system operation, but avoids logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
-  config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+  config.log_level = :debug
+
+  # ancienne config
+  #   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
+
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
