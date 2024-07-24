@@ -14,20 +14,16 @@
 <body class="<%= controller_name %>-<%= action_name %>">
     <%= render "shared/flashes" %>
     <div class="main-layout-container" style="display: flex">
-
         <% if action_name != "home" %>
-        <%= render "shared/navbar" %>
+            <%= render "shared/navbar" %>
         <% end %>
-
         <div class="pages-content">
             <%= yield %>
         </div>
     </div>
-</body>
-
-<script>
-    // Scripts importés à la fin du body pour un chargement correct après le contenu HTML 
+    
+    <!-- Scripts importés à la fin du body pour un chargement correct après le contenu HTML -->
     <%= javascript_importmap_tags %>
-</script>
+</body>
 
 </html>
