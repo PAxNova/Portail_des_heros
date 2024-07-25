@@ -2,7 +2,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { createConsumer } from "@rails/actioncable"
 
-// Connects to data-controller="backstory"
 export default class extends Controller {
   static targets = ["backstory", "photo"]
   static values = { characterId: Number }
@@ -46,7 +45,7 @@ export default class extends Controller {
 
   updateCharacterBackstory(data) {
     console.log("Updating character backstory with data:", data);
-  
+
     if (data.character_id === this.characterIdValue) {
       fetch(`/mes_personnages/${data.character_id}/backstory_partial`)
         .then(response => response.text())
