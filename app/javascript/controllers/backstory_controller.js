@@ -1,6 +1,6 @@
 // app/javascript/controllers/backstory_controller.js
 import { Controller } from "@hotwired/stimulus"
-import consumer from "../channels/consumer"
+import { createConsumer } from "@rails/actioncable"
 
 // Connects to data-controller="backstory"
 export default class extends Controller {
@@ -13,7 +13,7 @@ export default class extends Controller {
     if (!this.channel) {
       // Abonnement au canal ActionCable
       console.log("Connecting to ActionCable channel: CharacterChannel");
-      this.channel = consumer.subscriptions.create(
+      this.channel = createConsumer().subscriptions.create(
         { channel: "CharacterChannel", character_id: this.characterIdValue }, {
         received: (data) => {
           console.log("Received data from ActionCable:", data);
