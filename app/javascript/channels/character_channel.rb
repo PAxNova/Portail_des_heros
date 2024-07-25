@@ -1,13 +1,12 @@
 # app/channels/character_channel.rb
 class CharacterChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "character_channel_#{params[:character_id]}"
-    puts "User subscribed to character_channel_#{params[:character_id]}"
+    stream_from "character_channel_#{params[:id]}"
+    Rails.logger.info "CharacterChannel: User #{params[:id]} subscribed"
   end
 
   def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
     stop_all_streams
-    puts "User unsubscribed from character_channel_#{params[:character_id]}"
+    Rails.logger.info "CharacterChannel: User #{params[:id]} unsubscribed"
   end
 end

@@ -4,35 +4,32 @@ import { createConsumer } from "@rails/actioncable"
 
 export default class extends Controller {
   static targets = ["backstory", "photo"]
-  static values = { characterId: Number }
+  static values = { userId: Number }
 
   connect() {
-    console.log("Backstory controller connected for character ID:", this.characterIdValue);
+    console.log("Backstory controller connected for user ID:", this.userIdValue);
 
-    if (!this.channel) {
-      // Abonnement au canal ActionCable
-      console.log("Connecting to ActionCable channel: CharacterChannel");
-      this.channel = createConsumer().subscriptions.create(
-        { channel: "CharacterChannel", character_id: this.characterIdValue }, {
-        received: (data) => {
-          console.log("Received data from ActionCable:", data);
-          // Verify the character ID matches and that backstory is present
-          if (data.character_id === this.characterIdValue && data.backstory) {
-            this.updateCharacterBackstory(data);
-          } else {
-            console.log("Data received does not meet the required conditions.");
-          }
-        },
-        connected: () => {
-          console.log("Successfully connected to CharacterChannel for character ID:", this.characterIdValue);
-        },
-        disconnected: () => {
-          console.log("Disconnected from CharacterChannel for character ID:", this.characterIdValue);
+    // Abonnement au canal ActionCable
+    this.channel = createConsumer().subscriptions.create(
+      { channel: "CharacterChannel", id: this.userIdValue }, 
+      { received: (data) => {
+        console.log("Received data from ActionCable:", data);
+        // Verify the character ID matches and that backstory is present
+        /* if (data.character_id === this.characterIdValue && data.backstory) {
+          this.updateCharacterBackstory(data);
+        } else {
+          console.log("Data received does not meet the required conditions."); */
+        /* } */
         }
-      });
-
-      console.log("Backstory controller fully set up for character ID:", this.characterIdValue);
-    }
+      },
+      // connected: () => {
+        // console.log("Successfully connected to CharacterChannel for character ID:", this.characterIdValue);
+      // },
+      // disconnected: () => {
+        // console.log("Disconnected from CharacterChannel for character ID:", this.characterIdValue);
+      // }
+    );
+      // console.log("Backstory controller fully set up for character ID:", this.characterIdValue);
   }
 
   disconnect() {
