@@ -1,6 +1,6 @@
 // app/javascript/controllers/backstory_controller.js
 import { Controller } from "@hotwired/stimulus"
-import consumer from "./consumer"
+import consumer from "../channels/consumer"
 
 // Connects to data-controller="backstory"
 export default class extends Controller {
