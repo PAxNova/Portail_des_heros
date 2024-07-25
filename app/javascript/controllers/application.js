@@ -1,4 +1,6 @@
 import { Application } from "@hotwired/stimulus"
+import { createConsumer } from "@rails/actioncable"
+
 
 const application = Application.start()
 
@@ -7,3 +9,6 @@ application.debug = false
 window.Stimulus   = application
 
 export { application }
+
+// Configure Action Cable
+createConsumer()
